@@ -1,6 +1,7 @@
 {
-    "name": "SSD1309 OLED",
-    "description": "",
+    "name": "pxt-ssd1309-oled",
+    "version": "0.0.1",
+    "description": "SSD1309 OLED 128x64 I2C graphics library for BBC micro:bit",
     "dependencies": {
         "core": "*",
         "radio": "*",
@@ -9,7 +10,8 @@
     "files": [
         "main.blocks",
         "main.ts",
-        "README.md"
+        "README.md",
+        "ssd1309.ts"
     ],
     "testFiles": [
         "test.ts"
@@ -21,5 +23,5 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "tsprj"
 }

@@ -1,24 +1,56 @@
 
-> Otwórz tę stronę na [https://pawelkasprowicz.github.io/ssd1309-oled/](https://pawelkasprowicz.github.io/ssd1309-oled/)
+# SSD1309 OLED for BBC micro:bit
 
-## Użyj jako rozszerzenia
+Graphics library for SSD1309 128x64 OLED displays
+using I2C and Microsoft MakeCode.
 
-To repozytorium można dodać jako **rozszerzenie** w MakeCode.
+## Connection
 
-* otwórz [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* kliknij na **Nowy Projekt**
-* kliknij **Rozszerzenia** w menu oznaczonym kołem zębatym
-* szukaj **https://github.com/pawelkasprowicz/ssd1309-oled** i importuj
+| OLED | micro:bit |
+|---|---|
+| GND | GND |
+| VDD | 3V |
+| SCL | P19 |
+| SDA | P20 |
 
-## Edytuj ten projekt
+I2C address: 0x3C
 
-Aby edytować to repozytorium w MakeCode.
+## Features
 
-* otwórz [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* kliknij **Importuj**, a następnie **Importuj URL**
-* wklej **https://github.com/pawelkasprowicz/ssd1309-oled** i kliknij importuj
+- Pixel drawing and erasing
+- Lines: horizontal, vertical and diagonal
+- Rectangles and squares
+- Filled and outlined shapes
+- Circles
+- Text and numbers in sizes 1-5
+- Brightness adjustment
+- Display on/off
+- Inverted display
+- 1024-byte framebuffer
+- Manual screen refresh
 
-#### Metadane (używane do wyszukiwania, renderowania)
+## Example
 
-* for PXT/microbit
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
+```typescript
+ssd1309.init();
+
+ssd1309.clear();
+ssd1309.rectangle(0, 0, 128, 64, false);
+ssd1309.line(0, 0, 127, 63);
+ssd1309.text("HELLO", 10, 10, 2);
+
+ssd1309.show();
+```
+
+## How it works
+
+Drawing functions modify the RAM framebuffer.
+
+The OLED is updated only when show() is called.
+
+## Hardware
+
+Tested with:
+- BBC micro:bit V2
+- SSD1309 128x64 I2C OLED
+- I2C address 0x3C
