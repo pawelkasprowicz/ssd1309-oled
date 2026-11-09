@@ -2,13 +2,16 @@
 /**
  * SSD1309 OLED 128x64 I2C
  * BBC micro:bit MakeCode extension
+ * Buffered graphics library
  */
 
 //% color="#245A89" icon="\uf108" block="SSD1309 OLED"
 namespace ssd1309 {
 
     const ADDR = 0x3C;
-    let screen = pins.createBuffer(1024);
+
+    // Buffer is allocated only during init()
+    let screen: Buffer = null;
     let ready = false;
 
     function command(c: number): void {
@@ -30,6 +33,9 @@ namespace ssd1309 {
     //% block="inicjalizuj OLED"
     //% weight=100
     export function init(): void {
+        ready = false;
+        screen = pins.createBuffer(1024);
+
         basic.pause(100);
 
         let seq = [
@@ -56,6 +62,7 @@ namespace ssd1309 {
     //% block="wyczyść bufor"
     //% weight=95
     export function clear(): void {
+        if (screen == null) return;
         screen.fill(0);
     }
 
@@ -65,6 +72,7 @@ namespace ssd1309 {
     //% block="wypełnij bufor"
     //% weight=94
     export function fill(): void {
+        if (screen == null) return;
         screen.fill(255);
     }
 
@@ -74,7 +82,7 @@ namespace ssd1309 {
     //% block="wyświetl gotowy obraz"
     //% weight=90
     export function show(): void {
-        if (!ready) return;
+        if (!ready || screen == null) return;
 
         let packet = pins.createBuffer(17);
         packet[0] = 0x40;
@@ -108,6 +116,8 @@ namespace ssd1309 {
         y: number,
         on: boolean = true
     ): void {
+        if (screen == null) return;
+
         x = Math.round(x);
         y = Math.round(y);
 
@@ -343,6 +353,8 @@ namespace ssd1309 {
         y: number,
         size: number = 1
     ): void {
+        if (screen == null) return;
+
         size = Math.constrain(
             Math.round(size), 1, 5
         );
@@ -407,6 +419,7 @@ namespace ssd1309 {
     //% value.min=0 value.max=255 value.defl=128
     //% weight=50
     export function brightness(value: number): void {
+        if (!ready) return;
         command(0x81);
         command(Math.constrain(value, 0, 255));
     }
@@ -418,6 +431,7 @@ namespace ssd1309 {
     //% on.shadow="toggleOnOff"
     //% weight=49
     export function displayOn(on: boolean): void {
+        if (!ready) return;
         command(on ? 0xAF : 0xAE);
     }
 
@@ -428,6 +442,7 @@ namespace ssd1309 {
     //% on.shadow="toggleOnOff"
     //% weight=48
     export function invert(on: boolean): void {
+        if (!ready) return;
         command(on ? 0xA7 : 0xA6);
     }
 }
